@@ -13,7 +13,7 @@ const cargarEventListeners = () => {
 const agregarCurso = (event) => {
     event.preventDefault();
     if (event.target.classList.contains('agregar-carrito')) {
-        const boton = event.target; 
+        const boton = event.target;
         leerDatosCurso(boton);
 
     };
@@ -28,7 +28,20 @@ const leerDatosCurso = (boton) => {
         id: curso.querySelector('a').getAttribute('data-id'),
         cantidad: 1
     };
-    cursosCarrito = [...cursosCarrito, infoCurso];
+    const existeCurso = cursosCarrito.some(curso => curso.id === infoCurso.id);
+    if (existeCurso) {
+        const cursos = cursosCarrito.map( curso => {
+            if (curso.id === infoCurso.id) {
+                curso.cantidad += 1;
+                return curso;
+            } else {
+                return curso;
+            }
+        });
+        cursosCarrito = [...cursos];
+    } else {
+        cursosCarrito = [...cursosCarrito, infoCurso];
+    };
     insertarCarrito();
 };
 
@@ -36,16 +49,17 @@ const insertarCarrito = () => {
     //* Limpiar HTML
     limpiarCarrito();
 
-    cursosCarrito.forEach( (curso) => {
+    cursosCarrito.forEach( ({ imagen, titulo, precio, cantidad, id }) => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>
-                <img src="${curso.imagen}" width="100">
+                <img src="${imagen}" width="100">
             </td>
-            <td>${curso.titulo}</td>
-            <td>${curso.precio}</td>
+            <td>${titulo}</td>
+            <td>${precio}</td>
+            <td>${cantidad}</td>
             <td>
-                <a href="#" class="borrar-curso" data-id="${curso.id}">X</a>
+                <a href="#" class="borrar-curso" data-id="${id}">X</a>
             </td>
         `;
         contenedorCarrito.appendChild(row);
