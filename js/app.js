@@ -9,6 +9,7 @@ let cursosCarrito = [];
 const cargarEventListeners = () => {
     listaCursos.addEventListener('click', agregarCurso);
     carrito.addEventListener('click', eliminarCurso);
+    vaciarCarritoBtn.addEventListener('click', vaciarCarrito);
 };
 
 const agregarCurso = (event) => {
@@ -26,6 +27,11 @@ const eliminarCurso = (event) => {
         cursosCarrito = cursosCarrito.filter( curso => curso.id !== cursoId);
         insertarCarrito();
     }
+};
+
+const vaciarCarrito = () => {
+    cursosCarrito = [];
+    insertarCarrito();
 };
 
 const leerDatosCurso = (boton) => {
