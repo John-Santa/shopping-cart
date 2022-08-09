@@ -10,6 +10,15 @@ const cargarEventListeners = () => {
     listaCursos.addEventListener('click', agregarCurso);
     carrito.addEventListener('click', eliminarCurso);
     vaciarCarritoBtn.addEventListener('click', vaciarCarrito);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (localStorage.getItem('cursos') === null) {
+            return;
+        } else {
+            cursosCarrito = JSON.parse(localStorage.getItem('cursos'));
+            insertarCarrito();
+        }
+    });
 };
 
 const agregarCurso = (event) => {
@@ -79,7 +88,13 @@ const insertarCarrito = () => {
         `;
         contenedorCarrito.appendChild(row);
     });
+
+    sincronizeLocalStorage();
 };
+
+const sincronizeLocalStorage = () => {
+    localStorage.setItem('cursos', JSON.stringify(cursosCarrito));
+}
 
 const limpiarCarrito = () => {
     while (contenedorCarrito.firstChild) {
